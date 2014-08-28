@@ -1,0 +1,2 @@
+defmodule Declaimer do
+end
