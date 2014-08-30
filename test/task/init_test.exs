@@ -27,4 +27,11 @@ defmodule InitTest do
       refute File.exists?(file)
     end
   end
+
+  test "content of example presentation" do
+    content = File.read!("presentation.exs")
+
+    assert content =~ ~r/use Declaimer/
+    assert content =~ ~r/presentation do/
+  end
 end
