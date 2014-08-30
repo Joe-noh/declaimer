@@ -1,0 +1,2 @@
+defmodule SampleProject do
+end
