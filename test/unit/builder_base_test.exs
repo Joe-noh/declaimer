@@ -1,9 +1,8 @@
 defmodule BuilderBaseTest do
   use ExUnit.Case
 
-  import Declaimer.Builders.Base
+  import Declaimer.Builder.Base
   alias Declaimer.Presentation
-
 
   test "title" do
     html = build %Presentation{title: "The Title"}

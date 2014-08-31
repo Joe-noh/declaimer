@@ -1,4 +1,4 @@
-defmodule Declaimer.Builders.Base do
+defmodule Declaimer.Builder.Base do
   alias Declaimer.Presentation
 
   def build(%Presentation{} = presentation) do
