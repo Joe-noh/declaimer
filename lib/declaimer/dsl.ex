@@ -131,6 +131,6 @@ defmodule Declaimer.DSL do
   defp table_rows(rows), do: Enum.map(rows, &{:row, &1})
 
 	defmacro image(path) do
-		{:image, [path: path]}
+		{:image, path}
 	end
 end
