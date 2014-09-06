@@ -87,7 +87,7 @@ defmodule DSLTest do
   end
 
   test "table without headers" do
-    table = table headers: false do
+    table = table header: false do
       ["one", "two"]
       [  100,   200]
       [  300,   400]
@@ -102,31 +102,39 @@ defmodule DSLTest do
 
   test "image" do
     image = image("img/photo.png")
-
     assert image == {:img, [], src: "img/photo.png"}
   end
 
-  test "slide" do
-    slide = slide "The Slide" do
-      text "Lorem ipsum"
-      code "elixir" do
-        "iex> 1+2"
-      end
-    end
+  test "image with size" do
+    image = image("img/photo.png", size: :full)
+    assert image == {:img, [], src: "img/photo.png", class: ["full"]}
+  end
 
-    expected = {:div, [
+  test "slide" do
+    {:div, contents, attrs} =
+      slide "The Slide", theme: "dark" do
+        text "Lorem ipsum"
+        code "elixir" do
+          "iex> 1+2"
+        end
+      end
+
+    expected_contents = [
         {:h2, ["The Slide"], []},
         {:p, ["Lorem ipsum"], []},
         {:pre, [
             {:code, ["iex> 1+2"], class: ["elixir"]}
         ], []}
-      ], class: ["slide"]}
+      ]
 
-    assert slide == expected
+    assert contents == expected_contents
+    assert attrs[:theme] == "dark"
+    assert "slide" in attrs[:class]
+    refute "dark"  in attrs[:class]
   end
 
   test "presentation" do
-    p = presentation do
+    p = presentation theme: "plain" do
       title "Title"
       subtitle "Subtitle"
       author "me"
@@ -139,7 +147,7 @@ defmodule DSLTest do
         end
       end
 
-      slide "List" do
+      slide "List", theme: :dark do
         list :bullet do
           item "one"
           item "two"
@@ -155,23 +163,25 @@ defmodule DSLTest do
     end
 
     expected = """
+    <div class="cover">
     <h1 class="title">Title</h1>.*
     <div class="subtitle">Subtitle</div>.*
     <div class="author">me</div>.*
-    <div class="slide">.*
+    </div>.*
+    <div class="(slide plain|plain slide)">.*
     <h2>Intro</h2>.*
     <blockquote>Lorem ipsum</blockquote>.*
     <pre><code class="elixir">iex> 1\\+2.*
     3</code></pre>.*
     </div>.*
-    <div class="slide">.*
+    <div class="(slide dark|dark slide)">.*
     <h2>List</h2>.*
     <ul>.*
     <li>one</li>.*
     <li>two</li>.*
     </ul>.*
     </div>.*
-    <div class="slide">.*
+    <div class="(slide plain|plain slide)">.*
     <h2>Table</h2>.*
     <table>.*
     <tr>.*

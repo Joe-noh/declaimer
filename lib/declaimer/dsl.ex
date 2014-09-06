@@ -1,4 +1,5 @@
 defmodule Declaimer.DSL do
+  alias Declaimer.TagAttribute
   import Declaimer.Builder
 
   # metadata functions !!
@@ -8,7 +9,7 @@ defmodule Declaimer.DSL do
   def author(author),     do: {:div, [author],   class: ["author"]}
 
   # macro generation !!
-  @tags_with_no_arg [:presentation, :cite, :item, :text, :table]
+  @tags_with_no_arg [:cite, :item, :text, :table]
   Enum.each @tags_with_no_arg, fn (tag) ->
     do_function_name = String.to_atom("do_" <> Atom.to_string(tag))
 
@@ -54,17 +55,30 @@ defmodule Declaimer.DSL do
 
   # exceptional !!
   defmacro image(src, opts \\ []) do
-    quote do: {:img, [], src: unquote(src)}
+    attrs = TagAttribute.add_class([src: src], opts[:size])
+    quote do: {:img, [], unquote(attrs)}
   end
 
-  # worker functions !!
-  def do_presentation(opts, contents) do
-    {html, _} = build(contents)
-    html
+  defmacro presentation(opts \\ [], do: {:__block__, _, contents}) do
+    {slides, metadata} = Enum.partition(contents, &(elem(&1, 0) == :slide))
+    default_theme = opts[:theme]
+    quote do
+      slides = unquote(slides)
+        |> Enum.map(fn ({tag, contents, attrs}) ->
+          attrs = TagAttribute.put_new_theme(attrs, unquote(default_theme))
+          {tag, contents, attrs}
+        end)
+
+      {html, themes} = build([{:div, unquote(metadata), class: ["cover"]} | slides])
+      html
+    end
 	end
 
-  def do_slide(title, _, contents) do
-    {:div, [{:h2, [title], []} | contents], class: ["slide"]}
+  # worker functions !!
+  def do_slide(title, opts, contents) do
+    attrs = TagAttribute.put_new_theme([class: ["slide"]], opts[:theme])
+
+    {:div, [{:h2, [title], []} | contents], attrs}
   end
 
   def do_cite(_, contents) do
@@ -97,7 +111,7 @@ defmodule Declaimer.DSL do
   end
 
 	def do_table(opts, [first | rest] = rows) do
-		if Keyword.get(opts, :headers, true) do
+		if Keyword.get(opts, :header, true) do
 			{:table, [do_table_header(first) | do_table_rows(rest)], []}
 		else
 			{:table, do_table_rows(rows), []}

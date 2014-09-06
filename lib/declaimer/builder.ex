@@ -1,11 +1,17 @@
 defmodule Declaimer.Builder do
+  alias Declaimer.TagAttribute
+
   def build(triples), do: build(triples, [], [])
 
+  def build([{:div, content, [{:theme, theme} | other_attrs]} | rest], themes, acc) do
+    attrs = TagAttribute.add_class(other_attrs, theme)
+    html = do_build({:div, content, attrs})
+    build(rest, [theme | themes], [html | acc])
+  end
   def build([triple | rest], themes, acc) do
     html = do_build(triple)
     build(rest, themes, [html | acc])
   end
-
   def build([], themes, acc) do
     html = acc |> Enum.reverse |> Enum.join("\n")
     {html, themes}
@@ -26,16 +32,6 @@ defmodule Declaimer.Builder do
     "<#{tag}>#{contents}</#{tag}>"
   end
   defp htmlize(tag, contents, attrs) do
-    "<#{tag} #{stringify_attributes(attrs)}>#{contents}</#{tag}>"
-  end
-
-  defp stringify_attributes(attrs) when is_list(attrs) do
-    Enum.map(attrs, &stringify_attributes/1) |> Enum.join(" ")
-  end
-  defp stringify_attributes({key, val}) when is_list(val) do
-    ~s(#{key}="#{Enum.join(val, " ")}")
-  end
-  defp stringify_attributes({key, val}) when is_binary(val) do
-    ~s(#{key}="#{val}")
+    "<#{tag} #{TagAttribute.to_string attrs}>#{contents}</#{tag}>"
   end
 end
