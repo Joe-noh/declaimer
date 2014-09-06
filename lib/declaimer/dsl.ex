@@ -1,136 +1,116 @@
 defmodule Declaimer.DSL do
-  alias Declaimer.Presentation
+  import Declaimer.Builder
 
-  defmacro presentation(do: {:__block__, _, contents}) do
-    quote do: do_presentation(unquote contents)
-  end
-  defmacro presentation(do: contents) do
-    quote do: do_presentation(unquote contents)
-  end
-  defmacro presentation(contents) do
-    quote do: do_presentation(unquote contents)
-  end
+  # metadata functions !!
+  def title(title),       do: {:h1,  [title],    class: ["title"]}
+  def subtitle(subtitle), do: {:div, [subtitle], class: ["subtitle"]}
+  def date(date),         do: {:div, [date],     class: ["date"]}
+  def author(author),     do: {:div, [author],   class: ["author"]}
 
-	defmacro do_presentation(contents) do
-		{slides, metadata} = Enum.partition(contents, &elem(&1, 0) == :slide)
-
-		quote do
-			%Presentation{unquote_splicing(metadata), slides: unquote(slides)}
-		end
-	end
-
-  defmacro title(title) do
-		quote do: {:title, unquote title}
-	end
-
-  defmacro subtitle(sub) do
-		quote do: {:subtitle, unquote sub}
-	end
-
-  defmacro date(date) do
-    quote do: {:date, unquote date}
-	end
-
-  defmacro author(author) do
-		quote do: {:author, unquote author}
-	end
-
-	defmacro slide(title \\ "", contents)
-	defmacro slide(title, do: {:__block__, _, contents}) do
-		quote do: do_slide(unquote(title), unquote(contents))
-	end
-	defmacro slide(title, do: contents) do
-		quote do: do_slide(unquote(title), [unquote contents])
-	end
-
-	defmacro do_slide(title, contents) do
-		contents = Enum.map contents, fn (content) ->
-			if is_binary(content), do: {:text, content}, else: content
-    end
-
-		quote do
-			{:slide, unquote(title), unquote(contents)}
-		end
-	end
-
-  @tags_with_no_arg [:cite, :item]
+  # macro generation !!
+  @tags_with_no_arg [:presentation, :cite, :item, :text, :table]
   Enum.each @tags_with_no_arg, fn (tag) ->
-    defmacro unquote(tag)(do: {:__block__, _, blocks}) do
-      tag = unquote(tag)
-      quote do: {unquote(tag), unquote(blocks)}
+    do_function_name = String.to_atom("do_" <> Atom.to_string(tag))
+
+    defmacro unquote(tag)(opts \\ [], content)
+
+    defmacro unquote(tag)(opts, do: {:__block__, _, contents}) do
+      fun = unquote(do_function_name)
+      quote do: unquote(fun)(unquote(opts), unquote(contents))
     end
 
-    defmacro unquote(tag)(do: line) do
-      tag = unquote(tag)
-      quote do: {unquote(tag), [unquote line]}
+    defmacro unquote(tag)(opts, do: content) do
+      fun = unquote(do_function_name)
+      quote do: unquote(fun)(unquote(opts), [unquote content])
     end
 
-    defmacro unquote(tag)(line) do
-      tag = unquote(tag)
-      quote do: {unquote(tag), [unquote line]}
+    defmacro unquote(tag)(opts, content) do
+      fun = unquote(do_function_name)
+      quote do: unquote(fun)(unquote(opts), [unquote content])
     end
   end
 
-  @tags_with_one_arg [:code]
+  @tags_with_one_arg [:slide, :code, :list]
   Enum.each @tags_with_one_arg, fn (tag) ->
-    defmacro unquote(tag)(arg, do: {:__block__, _, blocks}) do
-      tag = unquote(tag)
-      quote do: {unquote(tag), unquote(arg), unquote(blocks)}
+    do_function_name = String.to_atom("do_" <> Atom.to_string(tag))
+
+    defmacro unquote(tag)(arg, opts \\ [], content)
+
+    defmacro unquote(tag)(arg, opts, do: {:__block__, _, contents}) do
+      fun = unquote(do_function_name)
+      quote do: unquote(fun)(unquote(arg), unquote(opts), unquote(contents))
     end
 
-    defmacro unquote(tag)(arg, do: line) do
-      tag = unquote(tag)
-      quote do: {unquote(tag), unquote(arg), [unquote line]}
+    defmacro unquote(tag)(arg, opts, do: content) do
+      fun = unquote(do_function_name)
+      quote do: unquote(fun)(unquote(arg), unquote(opts), [unquote content])
     end
 
-    defmacro unquote(tag)(arg, line) do
-      tag = unquote(tag)
-      quote do: {unquote(tag), unquote(arg), [unquote line]}
-    end
-  end
-
-  @list_styles [:bullet, :numbered, "bullet", "numbered"]
-  Enum.each @list_styles, fn (style) ->
-    style_atom = if is_atom(style) do
-      style
-    else
-      String.to_atom style
-    end
-
-    defmacro list(unquote(style), do: {:__block__, _, blocks}) do
-      style_atom = unquote(style_atom)
-      quote do: {unquote(style_atom), unquote(blocks)}
-    end
-
-    defmacro list(unquote(style), do: line) do
-      style_atom = unquote(style_atom)
-      quote do: {unquote(style_atom), [unquote line]}
+    defmacro unquote(tag)(arg, opts, content) do
+      fun = unquote(do_function_name)
+      quote do: unquote(fun)(unquote(arg), unquote(opts), [unquote content])
     end
   end
 
-	defmacro table(opts \\ [], rows)
-	defmacro table(opts, do: {:__block__, _, rows}) do
-		do_table(opts, rows)
+  # exceptional !!
+  defmacro image(src, opts \\ []) do
+    quote do: {:img, [], src: unquote(src)}
+  end
+
+  # worker functions !!
+  def do_presentation(opts, contents) do
+    {html, _} = build(contents)
+    html
 	end
-	defmacro table(opts, do: rows) do
-		do_table(opts, rows)
-	end
-	defmacro table(opts, rows) do
-		do_table(opts, rows)
-	end
+
+  def do_slide(title, _, contents) do
+    {:div, [{:h2, [title], []} | contents], class: ["slide"]}
+  end
+
+  def do_cite(_, contents) do
+    {:blockquote, contents, []}
+  end
+
+  def do_item(_, contents) do
+    {:li, contents, []}
+  end
+
+  def do_text(_, contents) do
+    {:p, contents, []}
+  end
+
+  def do_code(lang, _, contents) do
+    {:pre, [{:code, contents, class: [lang]}], []}
+  end
+
+  def do_list(:bullet, _, contents) do
+    {:ul, contents, []}
+  end
+
+  def do_list(:numbered, _, contents) do
+    {:ol, contents, []}
+  end
+
+  def do_list(invalid_type, _, _) do
+    msg = "'#{invalid_type}' is invalid list type. Use :bullet or :numbered."
+    raise ArgumentError, msg
+  end
 
 	def do_table(opts, [first | rest] = rows) do
 		if Keyword.get(opts, :headers, true) do
-			{:table, [table_header(first) | table_rows(rest)]}
+			{:table, [do_table_header(first) | do_table_rows(rest)], []}
 		else
-			{:table, table_rows(rows)}
+			{:table, do_table_rows(rows), []}
 		end
 	end
 
-  defp table_header(headers), do: {:header, headers}
-  defp table_rows(rows), do: Enum.map(rows, &{:row, &1})
+  defp do_table_header(headers) do
+    {:tr, Enum.map(headers, &{:th, [&1], []}), []}
+  end
 
-	defmacro image(path) do
-		{:image, [path: path]}
-	end
+  defp do_table_rows(rows) do
+    Enum.map rows, fn (row) ->
+      {:tr, Enum.map(row, &{:td, [&1], []}), []}
+    end
+  end
 end

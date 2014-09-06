@@ -1,45 +1,50 @@
 defmodule DSLTest do
   use ExUnit.Case
 
-  import Declaimer.DSL
-  alias Declaimer.Presentation
+  use Declaimer
 
   test "title" do
-    assert title("The Title") == {:title, "The Title"}
+    assert title("Title") == {:h1, ["Title"], class: ["title"]}
   end
 
   test "subtitle" do
-    assert subtitle("The Subtitle") == {:subtitle, "The Subtitle"}
+    assert subtitle("Subtitle") == {:div, ["Subtitle"], class: ["subtitle"]}
   end
 
   test "date" do
-    assert date("2014年8月28日") == {:date, "2014年8月28日"}
+    assert date("2014/09/02") == {:div, ["2014/09/02"], class: ["date"]}
   end
 
   test "author" do
-    assert author("Joe Honzawa") == {:author, "Joe Honzawa"}
+    assert author("John doe") == {:div, ["John doe"], class: ["author"]}
   end
 
-  test "cite" do
-    single = cite "Lorem ipsum"
+  test "cite single" do
+    assert cite("Lorem ipsum") == {:blockquote, ["Lorem ipsum"], []}
+  end
+
+  test "cite multi" do
     multi  = cite do
       "Lorem"
       "ipsum"
     end
 
-    assert single == {:cite, ["Lorem ipsum"]}
-    assert multi  == {:cite, ["Lorem", "ipsum"]}
+    assert multi  == {:blockquote, ["Lorem", "ipsum"], []}
   end
 
-  test "code" do
-    single = code("elixir", "iex> 1+2")
-    multi  = code "elixir" do
+  test "code single" do
+    code = code("elixir", "iex> 1+2")
+
+    assert code == {:pre, [{:code, ["iex> 1+2"], class: ["elixir"]}], []}
+  end
+
+  test "code multi" do
+    multi = code "elixir" do
       "iex> 1+2"
       "3"
     end
 
-    assert single == {:code, "elixir", ["iex> 1+2"]}
-    assert multi  == {:code, "elixir", ["iex> 1+2", "3"]}
+    assert multi  == {:pre, [{:code, ["iex> 1+2", "3"], class: ["elixir"]}], []}
   end
 
   test "list" do
@@ -47,13 +52,13 @@ defmodule DSLTest do
       item "one"
       item "two"
     end
-    numbered = list "numbered" do
+    numbered = list :numbered do
       item "one"
       item "two"
     end
 
-    assert bullet   == {:bullet,   [{:item, ["one"]}, {:item, ["two"]}]}
-    assert numbered == {:numbered, [{:item, ["one"]}, {:item, ["two"]}]}
+    assert bullet   == {:ul, [{:li, ["one"], []}, {:li, ["two"], []}], []}
+    assert numbered == {:ol, [{:li, ["one"], []}, {:li, ["two"], []}], []}
   end
 
   test "list item" do
@@ -63,8 +68,8 @@ defmodule DSLTest do
       "two"
     end
 
-    assert single == {:item, ["one"]}
-    assert multi  == {:item, ["one", "two"]}
+    assert single == {:li, ["one"], []}
+    assert multi  == {:li, ["one", "two"], []}
   end
 
   test "table with headers" do
@@ -74,10 +79,11 @@ defmodule DSLTest do
       [  300,   400]
     end
 
-    assert table == {:table,
-      [{:header, ["one", "two"]},
-        {:row,    [  100,   200]},
-        {:row,    [  300,   400]}]}
+    assert table == {:table, [
+      {:tr, [{:th, ["one"], []}, {:th, ["two"], []}], []},
+      {:tr, [{:td,   [100], []}, {:td,   [200], []}], []},
+      {:tr, [{:td,   [300], []}, {:td,   [400], []}], []}
+    ], []}
   end
 
   test "table without headers" do
@@ -87,49 +93,101 @@ defmodule DSLTest do
       [  300,   400]
     end
 
-    assert table == {:table,
-      [{:row, ["one", "two"]},
-       {:row, [  100,   200]},
-       {:row, [  300,   400]}]}
+    assert table == {:table, [
+      {:tr, [{:td, ["one"], []}, {:td, ["two"], []}], []},
+      {:tr, [{:td,   [100], []}, {:td,   [200], []}], []},
+      {:tr, [{:td,   [300], []}, {:td,   [400], []}], []}
+    ], []}
+  end
+
+  test "image" do
+    image = image("img/photo.png")
+
+    assert image == {:img, [], src: "img/photo.png"}
   end
 
   test "slide" do
     slide = slide "The Slide" do
-      "Lorem ipsum"
+      text "Lorem ipsum"
       code "elixir" do
         "iex> 1+2"
-        "3"
       end
     end
 
-    assert slide == {:slide, "The Slide",
-      [{:text, "Lorem ipsum"},
-        {:code, "elixir", ["iex> 1+2", "3"]}]}
+    expected = {:div, [
+        {:h2, ["The Slide"], []},
+        {:p, ["Lorem ipsum"], []},
+        {:pre, [
+            {:code, ["iex> 1+2"], class: ["elixir"]}
+        ], []}
+      ], class: ["slide"]}
+
+    assert slide == expected
   end
 
   test "presentation" do
     p = presentation do
-      title    "The Title"
-      subtitle "The Subtitle"
-      date     "2014-08-28"
-      author   "me"
+      title "Title"
+      subtitle "Subtitle"
+      author "me"
 
-      slide "Page 1" do
-        "Hello"
+      slide "Intro" do
+        cite "Lorem ipsum"
+        code "elixir" do
+          "iex> 1+2"
+          "3"
+        end
       end
 
-      slide "Page 2" do
-        "Thanks"
+      slide "List" do
+        list :bullet do
+          item "one"
+          item "two"
+        end
+      end
+
+      slide "Table" do
+        table do
+          ["a", "b"]
+          [111, 222]
+        end
       end
     end
 
-    assert p == %Presentation{
-      title:    "The Title",
-      subtitle: "The Subtitle",
-      date:     "2014-08-28",
-      author:   "me",
-      slides: [{:slide, "Page 1", [{:text, "Hello"}]},
-               {:slide, "Page 2", [{:text, "Thanks"}]}]
-    }
+    expected = """
+    <h1 class="title">Title</h1>.*
+    <div class="subtitle">Subtitle</div>.*
+    <div class="author">me</div>.*
+    <div class="slide">.*
+    <h2>Intro</h2>.*
+    <blockquote>Lorem ipsum</blockquote>.*
+    <pre><code class="elixir">iex> 1\\+2.*
+    3</code></pre>.*
+    </div>.*
+    <div class="slide">.*
+    <h2>List</h2>.*
+    <ul>.*
+    <li>one</li>.*
+    <li>two</li>.*
+    </ul>.*
+    </div>.*
+    <div class="slide">.*
+    <h2>Table</h2>.*
+    <table>.*
+    <tr>.*
+    <th>a</th>.*
+    <th>b</th>.*
+    </tr>.*
+    <tr>.*
+    <td>111</td>.*
+    <td>222</td>.*
+    </tr>.*
+    </table>.*
+    </div>.*
+    """
+    |> String.replace("\n", "")
+    |> Regex.compile!("sm")
+
+    assert p =~ expected
   end
 end
