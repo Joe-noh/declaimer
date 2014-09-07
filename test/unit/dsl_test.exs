@@ -134,7 +134,7 @@ defmodule DSLTest do
   end
 
   test "presentation" do
-    p = presentation theme: "plain" do
+    {html, _} = presentation theme: "plain" do
       title "Title"
       subtitle "Subtitle"
       author "me"
@@ -198,6 +198,6 @@ defmodule DSLTest do
     |> String.replace("\n", "")
     |> Regex.compile!("sm")
 
-    assert p =~ expected
+    assert html =~ expected
   end
 end
