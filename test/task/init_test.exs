@@ -19,13 +19,12 @@ defmodule InitTest do
   end
 
   test "directory structure" do
-    Enum.each ["mix.exs", "presentation.exs", "config", "img"], fn (file) ->
-      assert File.exists?(file)
-    end
+    ["mix.exs", "presentation.exs", "config", "img",
+     "js/presentation.js", "css/base.css", "css/normalize.css"]
+    |> Enum.each(& assert(File.exists? &1))
 
-    Enum.each ["lib", "test"], fn (file) ->
-      refute File.exists?(file)
-    end
+    ["lib", "test"]
+    |> Enum.each(& refute(File.exists? &1))
   end
 
   test "content of example presentation" do
@@ -33,5 +32,23 @@ defmodule InitTest do
 
     assert content =~ ~r/use Declaimer/
     assert content =~ ~r/presentation do/
+  end
+
+  test "content of presentation.js" do
+    content = File.read!("js/presentation.js")
+
+    assert content =~ "$(function () {"
+  end
+
+  test "content of base.css" do
+    content = File.read!("css/base.css")
+
+    assert content =~ "div.slide.active {"
+  end
+
+  test "content of normalize.css" do
+    content = File.read!("css/normalize.css")
+
+    assert content =~ "normalize.css v3.0.1"
   end
 end
