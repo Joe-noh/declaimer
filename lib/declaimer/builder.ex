@@ -17,15 +17,15 @@ defmodule Declaimer.Builder do
     {html, themes}
   end
 
+  defp do_build({tag, [], attrs}) do
+    htmlize(tag, "", attrs)
+  end
   defp do_build({tag, contents, attrs}) when is_list(contents) do
     contents = Enum.map(contents, &do_build/1) |> Enum.join("\n")
     htmlize(tag, contents, attrs)
   end
-  defp do_build({tag, [], attrs}) do
-    htmlize(tag, "", attrs)
-  end
   defp do_build(contents) do
-    contents
+    escape_html(contents)
   end
 
   defp htmlize(tag, contents, []) do
@@ -33,5 +33,16 @@ defmodule Declaimer.Builder do
   end
   defp htmlize(tag, contents, attrs) do
     "<#{tag} #{TagAttribute.to_string attrs}>#{contents}</#{tag}>"
+  end
+
+  defp escape_html(target) when is_binary(target) do
+    target
+    |> String.replace("&", "&amp;")
+    |> String.replace("<", "&gt;")
+    |> String.replace(">", "&lt;")  # enough?
+  end
+
+  defp escape_html(target) when is_integer(target) do
+    to_string(target)
   end
 end
