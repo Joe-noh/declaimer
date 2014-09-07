@@ -19,7 +19,8 @@ defmodule InitTest do
   end
 
   test "directory structure" do
-    ["mix.exs", "presentation.exs", "config", "img", "js/presentation.js", "css/base.css"]
+    ["mix.exs", "presentation.exs", "config", "img",
+     "js/presentation.js", "css/base.css", "css/normalize.css"]
     |> Enum.each(& assert(File.exists? &1))
 
     ["lib", "test"]
@@ -43,5 +44,11 @@ defmodule InitTest do
     content = File.read!("css/base.css")
 
     assert content =~ "div.slide.active {"
+  end
+
+  test "content of normalize.css" do
+    content = File.read!("css/normalize.css")
+
+    assert content =~ "normalize.css v3.0.1"
   end
 end

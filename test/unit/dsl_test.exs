@@ -163,25 +163,25 @@ defmodule DSLTest do
     end
 
     expected = """
-    <div class="cover">
+    <div class="(cover\\s?|slide\\s?|plain\\s?){3}">
     <h1 class="title">Title</h1>.*
     <div class="subtitle">Subtitle</div>.*
     <div class="author">me</div>.*
     </div>.*
-    <div class="(slide plain|plain slide)">.*
+    <div class="(slide\\s?|plain\\s?){2}">.*
     <h2>Intro</h2>.*
     <blockquote>Lorem ipsum</blockquote>.*
     <pre><code class="elixir">iex> 1\\+2.*
     3</code></pre>.*
     </div>.*
-    <div class="(slide dark|dark slide)">.*
+    <div class="(slide\\s?|dark\\s?){2}">.*
     <h2>List</h2>.*
     <ul>.*
     <li>one</li>.*
     <li>two</li>.*
     </ul>.*
     </div>.*
-    <div class="(slide plain|plain slide)">.*
+    <div class="(slide\\s?|plain\\s?){2}">.*
     <h2>Table</h2>.*
     <table>.*
     <tr>.*

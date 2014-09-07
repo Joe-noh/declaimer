@@ -16,4 +16,8 @@ defmodule AssetTest do
   test "content of base.css" do
     assert Asset.base_css =~ "div.slide.active {"
   end
+
+  test "content of normalize.css" do
+    assert Asset.normalize_css =~ "normalize.css v3.0.1"
+  end
 end

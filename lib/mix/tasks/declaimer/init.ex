@@ -28,17 +28,26 @@ defmodule Mix.Tasks.Declaimer.Init do
     unless File.exists?(css_file) do
       create_base_css css_file
     end
+
+    norm = "css/normalize.css"
+    unless File.exists?(norm) do
+      create_normalize_css norm
+    end
   end
 
-  defp create_sample_presentation(filename) do
-    File.write!(filename, Asset.sample_presentation_exs)
+  defp create_sample_presentation(filepath) do
+    File.write!(filepath, Asset.sample_presentation_exs)
   end
 
-  defp create_presentation_js(filename) do
-    File.write!(filename, Asset.presentation_js)
+  defp create_presentation_js(filepath) do
+    File.write!(filepath, Asset.presentation_js)
   end
 
-  defp create_base_css(filename) do
-    File.write!(filename, Asset.base_css)
+  defp create_base_css(filepath) do
+    File.write!(filepath, Asset.base_css)
+  end
+
+  defp create_normalize_css(filepath) do
+    File.write!(filepath, Asset.normalize_css)
   end
 end
