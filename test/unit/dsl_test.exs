@@ -171,7 +171,7 @@ defmodule DSLTest do
     <div class="(slide\\s?|plain\\s?){2}">.*
     <h2>Intro</h2>.*
     <blockquote>Lorem ipsum</blockquote>.*
-    <pre><code class="elixir">iex> 1\\+2.*
+    <pre><code class="elixir">iex&lt; 1\\+2.*
     3</code></pre>.*
     </div>.*
     <div class="(slide\\s?|dark\\s?){2}">.*
