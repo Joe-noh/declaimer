@@ -2,20 +2,10 @@ defmodule InitTest do
   use ExUnit.Case
 
   setup_all do
-    project_path = (__DIR__ |> Path.dirname |> Path.dirname)
+    tmp_dir = TestHelper.prepare_test_project
+    TestHelper.run(:init, tmp_dir)
 
-    tmp_dir = Path.join(System.tmp_dir!, "for_declaimer_test")
-    File.cp_r!("test/sample_project", tmp_dir)
-    File.cd! tmp_dir
-
-    replace_exp = "s/PROJECT_PATH/" <> String.replace(project_path, "\/", "\\/") <> "/"
-    System.cmd("sed", ["-i", replace_exp, "mix.exs"])
-
-    System.cmd("mix", ["declaimer.init"])
-
-    on_exit fn ->
-      File.rm_rf! tmp_dir
-    end
+    on_exit fn -> (File.rm_rf! tmp_dir) end
   end
 
   test "directory structure" do
