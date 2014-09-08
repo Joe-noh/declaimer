@@ -9,6 +9,11 @@ defmodule CompileTest do
     on_exit fn -> (File.rm_rf! tmp_dir) end
   end
 
+  test "generated files" do
+    assert File.exists?("presentation.html")
+    assert File.exists?("css/plain.css")
+  end
+
   test "contents of presentation.html" do
     content = File.read!("presentation.html")
 
@@ -17,5 +22,11 @@ defmodule CompileTest do
     assert content =~ "base.css"
     assert content =~ "presentation.js"
     assert content =~ "<div"
+  end
+
+  test "contents of css/plain.css" do
+    content = File.read!("css/plain.css")
+
+    assert content == Declaimer.Theme.Plain.css
   end
 end

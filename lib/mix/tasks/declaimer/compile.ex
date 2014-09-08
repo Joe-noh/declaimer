@@ -2,6 +2,19 @@ defmodule Mix.Tasks.Declaimer.Compile do
   def run(_) do
     {{html, themes}, _} = Code.eval_file("presentation.exs")
 
+    # generate css !!
+    # this does not remove existing css because the user may edit them
+    Enum.each themes, fn (theme) ->
+      css_file = "css/#{theme}.css"
+      unless File.exists?(css_file) do
+        css = ("Elixir.Declaimer.Theme.#{String.capitalize theme}"
+               |> String.to_atom
+               |> :erlang.make_fun(:css, 0)).()
+        File.write!(css_file, css)
+      end
+    end
+
+    # generate html !!
     html_file = "presentation.html"
     if File.exists?(html_file) do
       File.rm!(html_file)

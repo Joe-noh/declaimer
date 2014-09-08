@@ -5,7 +5,7 @@ defmodule Declaimer.Builder do
 
   def build([{:div, content, [{:theme, theme} | other_attrs]} | rest], themes, acc) do
     attrs = TagAttribute.add_class(other_attrs, theme)
-    html = do_build({:div, content, attrs})
+    html  = do_build({:div, content, attrs})
     build(rest, [theme | themes], [html | acc])
   end
   def build([triple | rest], themes, acc) do
@@ -14,7 +14,7 @@ defmodule Declaimer.Builder do
   end
   def build([], themes, acc) do
     html = acc |> Enum.reverse |> Enum.join("\n")
-    {html, themes}
+    {html, Enum.uniq(themes)}
   end
 
   defp do_build({tag, [], attrs}) do
