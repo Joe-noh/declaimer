@@ -14,7 +14,7 @@ defmodule InitTest do
      "js/presentation.js", "css/base.css", "css/reset.css"]
     |> Enum.each(& assert(File.exists? &1))
 
-    ["lib", "test", "css/plain.css"]
+    ["lib", "test"]
     |> Enum.each(& refute(File.exists? &1))
   end
 
