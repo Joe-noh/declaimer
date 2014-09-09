@@ -1,5 +1,6 @@
 defmodule InitTest do
   use ExUnit.Case
+  alias Declaimer.Asset
 
   setup_all do
     tmp_dir = TestHelper.prepare_test_project
@@ -10,7 +11,7 @@ defmodule InitTest do
 
   test "directory structure" do
     ["mix.exs", "presentation.exs", "config", "img",
-     "js/presentation.js", "css/base.css", "css/normalize.css"]
+     "js/presentation.js", "css/base.css", "css/reset.css"]
     |> Enum.each(& assert(File.exists? &1))
 
     ["lib", "test", "css/plain.css"]
@@ -27,18 +28,18 @@ defmodule InitTest do
   test "content of presentation.js" do
     content = File.read!("js/presentation.js")
 
-    assert content =~ "$(function () {"
+    assert content == Asset.presentation_js
   end
 
   test "content of base.css" do
     content = File.read!("css/base.css")
 
-    assert content =~ "div.slide.active {"
+    assert content == Asset.base_css
   end
 
-  test "content of normalize.css" do
-    content = File.read!("css/normalize.css")
+  test "content of reset.css" do
+    content = File.read!("css/reset.css")
 
-    assert content =~ "normalize.css v3.0.1"
+    assert content == Asset.reset_css
   end
 end

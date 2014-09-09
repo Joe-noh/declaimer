@@ -14,24 +14,24 @@ defmodule Mix.Tasks.Declaimer.Init do
       if File.exists?(dir),  do: File.rm_rf!(dir)
     end)
 
-    sample_file = "presentation.exs"
-    unless File.exists?(sample_file) do
-      create_sample_presentation sample_file
+    path = "presentation.exs"
+    unless File.exists?(path) do
+      create_sample_presentation path
     end
 
-    js_file = "js/presentation.js"
-    unless File.exists?(js_file) do
-      create_presentation_js js_file
+    path = "js/presentation.js"
+    unless File.exists?(path) do
+      create_presentation_js path
     end
 
-    css_file = "css/base.css"
-    unless File.exists?(css_file) do
-      create_base_css css_file
+    path = "css/base.css"
+    unless File.exists?(path) do
+      create_base_css path
     end
 
-    norm = "css/normalize.css"
-    unless File.exists?(norm) do
-      create_normalize_css norm
+    path = "css/reset.css"
+    unless File.exists?(path) do
+      create_reset_css path
     end
   end
 
@@ -47,7 +47,7 @@ defmodule Mix.Tasks.Declaimer.Init do
     File.write!(filepath, Asset.base_css)
   end
 
-  defp create_normalize_css(filepath) do
-    File.write!(filepath, Asset.normalize_css)
+  defp create_reset_css(filepath) do
+    File.write!(filepath, Asset.reset_css)
   end
 end
