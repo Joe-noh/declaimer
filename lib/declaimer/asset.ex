@@ -104,6 +104,122 @@ defmodule Declaimer.Asset do
         visibility: visible;
       }
     }
+
+    .cover * {
+      position: absolute;
+      left: 10%;
+    }
+
+    .cover .title {
+      top: 10%;
+      font-size: 1000%;
+    }
+
+    .cover .subtitle {
+      top: 30%;
+      font-size: 700%;
+    }
+
+    .cover .author {
+      top: 60%;
+      font-size: 500%;
+    }
+
+    .cover .date {
+      top: 80%;
+      font-size: 400%;
+    }
+
+    .slide:not(.cover) * {
+      position: relative;
+    }
+
+    .slide h2 {
+      margin: 2% 0 2% 4%;
+      font-size: 500%;
+    }
+
+    .slide p {
+      margin-left: 7%;
+      font-size: 400%;
+    }
+
+    .slide.takahashi {
+      display: inline-table;
+    }
+
+    .slide.takahashi * {
+      width: 90%;
+      vertical-align: middle;
+      text-align: center;
+      display: table-cell;
+      font-size: 1100%;
+    }
+
+    .slide > ul {
+      margin-left: 7%;
+      font-size: 400%;
+    }
+
+    .slide > ol {
+      margin-left: 10%;
+      font-size: 400%;
+    }
+
+    .slide ul ul, .slide ol ul {
+      margin-left: 4%;
+      font-size: 100%;
+    }
+
+    .slide ul ol, .slide ol ol {
+      margin-left: 7%;
+      font-size: 100%;
+    }
+
+    .slide > blockquote, .slide > pre {
+      margin: 0 auto;
+      width: 90%;
+    }
+
+    .slide pre {
+      font-size: 300%;
+    }
+
+    .slide blockquote {
+      background-color: #e8e8e8;
+      font-size: 400%;
+      padding: 2%;
+    }
+
+    .slide ul blockquote, .slide ol blockquote {
+      width: 90%;
+      font-size: inherit;
+    }
+
+    .slide table {
+      margin: 0 auto;
+      width: 90%;
+      font-size: 400%;
+    }
+
+    .slide table, .slide td, .slide th {
+      border: 1px black solid;
+    }
+
+    .slide img {
+      margin: 0 auto;
+      display: block;
+    }
+
+    .slide img.height-max {
+      min-height: 100%;
+      width: auto;
+    }
+
+    .slide img.width-max {
+      height: auto;
+      min-width: 100%;
+    }
     """
   end
 
