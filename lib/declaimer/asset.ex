@@ -85,15 +85,24 @@ defmodule Declaimer.Asset do
     body, html, div.slide {
       height: 100%;
       width:  100%;
+      overflow: hidden;
     }
 
-    div.slide.active {
-      visibility: visible;
+    @media screen {
+      div.slide.active {
+        visibility: visible;
+      }
+
+      div.slide.inactive {
+        visibility: hidden;
+        display: none;
+      }
     }
 
-    div.slide.inactive {
-      visibility: hidden;
-      display: none;
+    @media print {
+      div.slide.active, div.slide.inactive {
+        visibility: visible;
+      }
     }
     """
   end
