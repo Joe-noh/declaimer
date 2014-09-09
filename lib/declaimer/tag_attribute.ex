@@ -17,6 +17,9 @@ defmodule Declaimer.TagAttribute do
     Keyword.put_new(attrs, :theme, "#{theme}")
   end
 
+  def to_string({_, nil}) do
+    ""
+  end
   def to_string(attrs) when is_list(attrs) do
     Enum.map(attrs, &to_string/1) |> Enum.join(" ")
   end
@@ -24,7 +27,7 @@ defmodule Declaimer.TagAttribute do
     values = val |> Enum.filter(&(not nil?(&1))) |> Enum.join(" ")
     ~s(#{key}="#{values}")
   end
-  def to_string({key, val}) when is_binary(val) do
+  def to_string({key, val}) do
     ~s(#{key}="#{val}")
   end
 end

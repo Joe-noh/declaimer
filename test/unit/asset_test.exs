@@ -18,6 +18,6 @@ defmodule AssetTest do
   end
 
   test "content of normalize.css" do
-    assert Asset.normalize_css =~ "normalize.css v3.0.1"
+    assert Asset.reset_css =~ "html,body,div,span,"
   end
 end

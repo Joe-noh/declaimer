@@ -134,7 +134,7 @@ defmodule DSLTest do
   end
 
   test "presentation" do
-    {html, _} = presentation theme: "plain" do
+    {html, _} = presentation do
       title "Title"
       subtitle "Subtitle"
       author "me"
@@ -163,12 +163,12 @@ defmodule DSLTest do
     end
 
     expected = """
-    <div class="(cover\\s?|slide\\s?|plain\\s?){3}">
+    <div class="(cover\\s?|slide\\s?){2}"\s*>
     <h1 class="title">Title</h1>.*
     <div class="subtitle">Subtitle</div>.*
     <div class="author">me</div>.*
     </div>.*
-    <div class="(slide\\s?|plain\\s?){2}">.*
+    <div class="slide">.*
     <h2>Intro</h2>.*
     <blockquote>Lorem ipsum</blockquote>.*
     <pre><code class="elixir">iex&lt; 1\\+2.*
@@ -181,7 +181,7 @@ defmodule DSLTest do
     <li>two</li>.*
     </ul>.*
     </div>.*
-    <div class="(slide\\s?|plain\\s?){2}">.*
+    <div class="slide">.*
     <h2>Table</h2>.*
     <table>.*
     <tr>.*

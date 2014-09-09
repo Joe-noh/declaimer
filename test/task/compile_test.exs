@@ -11,7 +11,7 @@ defmodule CompileTest do
 
   test "generated files" do
     assert File.exists?("presentation.html")
-    assert File.exists?("css/plain.css")
+    assert File.exists?("css/dark.css")
   end
 
   test "contents of presentation.html" do
@@ -25,8 +25,8 @@ defmodule CompileTest do
   end
 
   test "contents of css/plain.css" do
-    content = File.read!("css/plain.css")
+    content = File.read!("css/dark.css")
 
-    assert content == Declaimer.Theme.Plain.css
+    assert content == Declaimer.Theme.Dark.css
   end
 end

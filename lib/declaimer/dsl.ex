@@ -61,19 +61,20 @@ defmodule Declaimer.DSL do
 
   defmacro presentation(opts \\ [], do: {:__block__, _, contents}) do
     {slides, metadata} = Enum.partition(contents, &(elem(&1, 0) == :slide))
-    default_theme = to_string(Keyword.get(opts, :theme, "plain"))
 
+    theme = opts[:theme]
     quote do
-      slides = unquote(slides)
-        |> Enum.map(fn ({tag, contents, attrs}) ->
-          attrs = TagAttribute.put_new_theme(attrs, unquote(default_theme))
-          {tag, contents, attrs}
-        end)
+      slides = case unquote(theme) do
+        nil   -> unquote(slides)
+        theme -> Enum.map unquote(slides), fn ({tag, content, attrs}) ->
+                   {tag, content, TagAttribute.put_new_theme(attrs, theme)}
+                 end
+      end
 
       build [{
         :div,
         unquote(metadata),
-        class: ["cover", "slide", unquote(default_theme)]
+        [class: ["cover", "slide"], theme: unquote(theme)]
       } | slides]
     end
 	end
