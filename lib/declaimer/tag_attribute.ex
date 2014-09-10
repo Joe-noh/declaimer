@@ -24,7 +24,7 @@ defmodule Declaimer.TagAttribute do
     Enum.map(attrs, &to_string/1) |> Enum.join(" ")
   end
   def to_string({key, val}) when is_list(val) do
-    values = val |> Enum.filter(&(not nil?(&1))) |> Enum.join(" ")
+    values = val |> Enum.filter(&(not is_nil(&1))) |> Enum.join(" ")
     ~s(#{key}="#{values}")
   end
   def to_string({key, val}) do
