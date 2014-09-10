@@ -134,7 +134,7 @@ defmodule DSLTest do
   end
 
   test "presentation" do
-    {html, _} = presentation do
+    {html, themes, opts} = presentation highlight_js_theme: "monokai" do
       title "Title"
       subtitle "Subtitle"
       author "me"
@@ -199,5 +199,7 @@ defmodule DSLTest do
     |> Regex.compile!("sm")
 
     assert html =~ expected
+    assert themes == ["dark"]
+    assert opts == [highlight_js_theme: "monokai"]
   end
 end

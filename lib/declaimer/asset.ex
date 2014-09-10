@@ -18,9 +18,10 @@ defmodule Declaimer.Asset do
       end
 
       slide "Page 2", theme: :dark do
-        code "elixir" do
-          "iex> 1+2"
-          "3"
+        code "markdown" do
+          "# Head"
+          "* one"
+          "* two"
         end
       end
     end
