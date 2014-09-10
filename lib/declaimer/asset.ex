@@ -10,7 +10,7 @@ defmodule Declaimer.Asset do
       date     "1970-01-01"
 
       slide "Page 1" do
-        "Hello World"
+        text "Hello World"
         list :bullet do
           item "こんにちわ"
           item "世界"

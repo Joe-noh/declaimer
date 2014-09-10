@@ -28,9 +28,9 @@ defmodule Mix.Tasks.Declaimer.Compile do
     <html>
       <head>
         <meta charset="UTF-8">
-        <link type="text/css" media="screen" rel="stylesheet" href="css/normalize.css">
-        <link type="text"css" media="screen" rel="stylesheet" href="css/base.css">
-        <% Enum.each themes, fn (theme) -> %>
+        <link type="text/css" media="screen" rel="stylesheet" href="css/reset.css">
+        <link type="text/css" media="screen" rel="stylesheet" href="css/base.css">
+        <%= Enum.map themes, fn (theme) -> %>
           <link type="text/css" media="screen" rel="stylesheet" href="css/<%= theme %>.css">
         <% end %>
       </head>

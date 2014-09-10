@@ -18,13 +18,14 @@ defmodule CompileTest do
     content = File.read!("presentation.html")
 
     assert content =~ "<!DOCTYPE html>"
-    assert content =~ "normalize.css"
+    assert content =~ "reset.css"
     assert content =~ "base.css"
+    assert content =~ "dark.css"
     assert content =~ "presentation.js"
     assert content =~ "<div"
   end
 
-  test "contents of css/plain.css" do
+  test "contents of css/dark.css" do
     content = File.read!("css/dark.css")
 
     assert content == Declaimer.Theme.Dark.css
