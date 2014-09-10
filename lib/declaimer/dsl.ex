@@ -71,11 +71,12 @@ defmodule Declaimer.DSL do
                  end
       end
 
-      build [{
+      {html, themes} = build([{
         :div,
         unquote(metadata),
         [class: ["cover", "slide"], theme: unquote(theme)]
-      } | slides]
+      } | slides])
+      {html, themes, unquote(opts)}
     end
 	end
 
