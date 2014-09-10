@@ -38,8 +38,8 @@ defmodule Declaimer.Builder do
   defp escape_html(target) when is_binary(target) do
     target
     |> String.replace("&", "&amp;")
-    |> String.replace("<", "&gt;")
-    |> String.replace(">", "&lt;")  # enough?
+    |> String.replace("<", "&lt;")
+    |> String.replace(">", "&gt;")  # enough?
   end
 
   defp escape_html(target) when is_integer(target) do
