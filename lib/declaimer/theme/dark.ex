@@ -3,7 +3,7 @@ defmodule Declaimer.Theme.Dark do
     """
     .slide.dark {
       color: white;
-      background-color: #888888;
+      background-color: #333333;
     }
     """
   end

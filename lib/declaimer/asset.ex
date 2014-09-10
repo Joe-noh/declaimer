@@ -118,7 +118,7 @@ defmodule Declaimer.Asset do
 
     .cover .subtitle {
       top: 30%;
-      font-size: 700%;
+      font-size: 600%;
     }
 
     .cover .author {
@@ -136,12 +136,12 @@ defmodule Declaimer.Asset do
     }
 
     .slide h2 {
-      margin: 2% 0 2% 4%;
+      margin: 2% 0 3% 4%;
       font-size: 500%;
     }
 
     .slide p {
-      margin-left: 7%;
+      margin: 1% 0 1% 7%;
       font-size: 400%;
     }
 
@@ -177,8 +177,12 @@ defmodule Declaimer.Asset do
       font-size: 100%;
     }
 
+    .slide li {
+      margin-top: 1%;
+    }
+
     .slide > blockquote, .slide > pre {
-      margin: 0 auto;
+      margin: 1% auto;
       width: 90%;
     }
 
@@ -198,7 +202,7 @@ defmodule Declaimer.Asset do
     }
 
     .slide table {
-      margin: 0 auto;
+      margin: 1% auto;
       width: 90%;
       font-size: 400%;
     }
@@ -208,7 +212,7 @@ defmodule Declaimer.Asset do
     }
 
     .slide img {
-      margin: 0 auto;
+      margin: 1% auto;
       display: block;
     }
 
