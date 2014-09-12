@@ -28,6 +28,15 @@ defmodule Declaimer.Asset do
     """
   end
 
+  def config_exs do
+    """
+    use Mix.Config
+
+    config :declaimer,
+      highlight_js_theme: "hybrid"
+    """
+  end
+
   def presentation_js do
     """
     $(function () {

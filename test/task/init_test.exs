@@ -11,7 +11,8 @@ defmodule InitTest do
 
   test "directory structure" do
     ["mix.exs", "presentation.exs", "config", "img",
-     "js/presentation.js", "css/base.css", "css/reset.css"]
+     "js/presentation.js", "css/base.css", "css/reset.css",
+     "config/config.exs"]
     |> Enum.each(& assert(File.exists? &1))
 
     ["lib", "test"]
@@ -23,6 +24,12 @@ defmodule InitTest do
 
     assert content =~ ~r/use Declaimer/
     assert content =~ ~r/presentation do/
+  end
+
+  test "content of config.exs" do
+    content = File.read!("config/config.exs")
+
+    assert content == Asset.config_exs
   end
 
   test "content of presentation.js" do

@@ -1,7 +1,6 @@
 defmodule Mix.Tasks.Declaimer.Compile do
   def run(_) do
     {{html, themes, opts}, _} = Code.eval_file("presentation.exs")
-    highlight = Keyword.get(opts, :highlight_js_theme, "default")
 
     # generate css !!
     # this does not remove existing css because the user may edit them
@@ -17,16 +16,15 @@ defmodule Mix.Tasks.Declaimer.Compile do
 
     # generate html !!
     html_file = "presentation.html"
-    if File.exists?(html_file) do
-      File.rm!(html_file)
-    end
+    if File.exists?(html_file), do: File.rm!(html_file)
+
     File.write!(
       html_file,
       EEx.eval_string(
         template_eex,
         body: html,
         themes: themes,
-        highlight_theme: highlight
+        highlight_theme: highlight_js_theme(opts)
       )
     )
   end
@@ -55,5 +53,10 @@ defmodule Mix.Tasks.Declaimer.Compile do
       </body>
     </html>
     """
+  end
+
+  defp highlight_js_theme(opts) do
+    theme = Application.get_env(:declaimer, :highlight_js_theme, "hybrid")
+    Keyword.get(opts, :highlight_js_theme, theme)
   end
 end
