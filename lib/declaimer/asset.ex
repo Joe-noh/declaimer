@@ -33,6 +33,8 @@ defmodule Declaimer.Asset do
     use Mix.Config
 
     config :declaimer,
+      source_exs: "presentation.exs",
+      output_html: "presentation.html",
       highlight_js_theme: "hybrid"
     """
   end

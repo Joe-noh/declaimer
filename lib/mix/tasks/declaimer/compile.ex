@@ -1,6 +1,6 @@
 defmodule Mix.Tasks.Declaimer.Compile do
   def run(_) do
-    {{html, themes, opts}, _} = Code.eval_file("presentation.exs")
+    {{html, themes, opts}, _} = Code.eval_file(source_exs)
 
     # generate css !!
     # this does not remove existing css because the user may edit them
@@ -15,7 +15,7 @@ defmodule Mix.Tasks.Declaimer.Compile do
     end
 
     # generate html !!
-    html_file = "presentation.html"
+    html_file = output_html
     if File.exists?(html_file), do: File.rm!(html_file)
 
     File.write!(
@@ -53,6 +53,14 @@ defmodule Mix.Tasks.Declaimer.Compile do
       </body>
     </html>
     """
+  end
+
+  defp source_exs do
+    Application.get_env(:declaimer, :source_exs, "presentation.exs")
+  end
+
+  defp output_html do
+    Application.get_env(:declaimer, :output_html, "presentation.html")
   end
 
   defp highlight_js_theme(opts) do
