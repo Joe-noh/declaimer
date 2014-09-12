@@ -37,10 +37,10 @@ defmodule Mix.Tasks.Declaimer.Compile do
     <html>
       <head>
         <meta charset="UTF-8">
-        <link type="text/css" media="screen" rel="stylesheet" href="css/reset.css">
-        <link type="text/css" media="screen" rel="stylesheet" href="css/base.css">
+        <link type="text/css" rel="stylesheet" href="css/reset.css">
+        <link type="text/css" rel="stylesheet" href="css/base.css">
         <%= Enum.map themes, fn (theme) -> %>
-          <link type="text/css" media="screen" rel="stylesheet" href="css/<%= theme %>.css">
+          <link type="text/css" rel="stylesheet" href="css/<%= theme %>.css">
         <% end %>
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/styles/<%= highlight_theme %>.min.css">
       </head>
