@@ -19,6 +19,11 @@ defmodule Mix.Tasks.Declaimer.Init do
       create_sample_presentation path
     end
 
+    path = "config/config.exs"
+    if nonsense_config_file?(path) do
+      create_config_exs path
+    end
+
     path = "js/presentation.js"
     unless File.exists?(path) do
       create_presentation_js path
@@ -35,8 +40,17 @@ defmodule Mix.Tasks.Declaimer.Init do
     end
   end
 
+  # TODO functions generation
+  # [:sample_presentation, :config_file, ... ]
+  # |> Enum.each fn (name) -> ...
+  #
+  # also check existence
   defp create_sample_presentation(filepath) do
     File.write!(filepath, Asset.sample_presentation_exs)
+  end
+
+  defp create_config_exs(filepath) do
+    File.write!(filepath, Asset.config_exs)
   end
 
   defp create_presentation_js(filepath) do
@@ -49,5 +63,15 @@ defmodule Mix.Tasks.Declaimer.Init do
 
   defp create_reset_css(filepath) do
     File.write!(filepath, Asset.reset_css)
+  end
+
+  defp nonsense_config_file?(filepath) do
+    filepath
+    |> File.stream!
+    |> Stream.map(&String.strip/1)
+    |> Stream.filter(&(String.first(&1) != "#"))
+    |> Stream.filter(&(not Regex.match? ~r/\A\z/, &1))
+    |> Enum.count
+    |> Kernel.<=(1)
   end
 end
