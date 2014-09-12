@@ -77,58 +77,66 @@ defmodule Declaimer.Asset do
       function deactivate(index) {
         $(slides[index]).removeClass("active").addClass("inactive");
       }
+
+      $(window).on("load resize", function() {
+        var h = parseInt($(window).height());
+        $("html").css("font-size", parseInt(h*0.018)+"px");
+      });
     });
     """
   end
 
   def base_css do
     """
-    body, html, div.slide {
+    body, html, .slide {
+      font-size: 14px;
       height: 100%;
       width:  100%;
+    }
+
+    .slide {
       overflow: hidden;
     }
 
     @media screen {
-      div.slide.active {
+      .slide.active {
         visibility: visible;
       }
 
-      div.slide.inactive {
+      .slide.inactive {
         visibility: hidden;
         display: none;
       }
     }
 
     @media print {
-      div.slide.active, div.slide.inactive {
+      .slide.active, .slide.inactive {
         visibility: visible;
       }
     }
 
     .cover * {
-      position: absolute;
-      left: 10%;
+      margin-left: 3rem;
     }
 
     .cover .title {
-      top: 10%;
-      font-size: 1000%;
+      margin-top: 4rem;
+      font-size: 10rem;
     }
 
     .cover .subtitle {
-      top: 30%;
-      font-size: 600%;
+      margin-top: 3rem;
+      font-size: 6rem;
     }
 
     .cover .author {
-      top: 60%;
-      font-size: 500%;
+      margin-top: 7rem;
+      font-size: 5rem;
     }
 
     .cover .date {
-      top: 80%;
-      font-size: 400%;
+      margin-top: 2rem;
+      font-size: 4rem;
     }
 
     .slide:not(.cover) * {
@@ -137,12 +145,12 @@ defmodule Declaimer.Asset do
 
     .slide h2 {
       margin: 2% 0 3% 4%;
-      font-size: 500%;
+      font-size: 5rem;
     }
 
     .slide p {
       margin: 1% 0 1% 7%;
-      font-size: 400%;
+      font-size: 4rem;
     }
 
     .slide.takahashi {
@@ -154,31 +162,29 @@ defmodule Declaimer.Asset do
       vertical-align: middle;
       text-align: center;
       display: table-cell;
-      font-size: 1100%;
+      font-size: 10rem;
     }
 
     .slide > ul {
       margin-left: 7%;
-      font-size: 400%;
+      font-size: 4rem;
     }
 
     .slide > ol {
       margin-left: 10%;
-      font-size: 400%;
+      font-size: 4rem;
     }
 
     .slide ul ul, .slide ol ul {
       margin-left: 4%;
-      font-size: 100%;
     }
 
     .slide ul ol, .slide ol ol {
       margin-left: 7%;
-      font-size: 100%;
     }
 
     .slide li {
-      margin-top: 1%;
+      margin-top: 2%;
     }
 
     .slide > blockquote, .slide > pre {
@@ -187,12 +193,12 @@ defmodule Declaimer.Asset do
     }
 
     .slide pre {
-      font-size: 300%;
+      font-size: 3rem;
     }
 
     .slide blockquote {
       background-color: #e8e8e8;
-      font-size: 400%;
+      font-size: 4rem;
       padding: 2%;
     }
 
@@ -204,7 +210,7 @@ defmodule Declaimer.Asset do
     .slide table {
       margin: 1% auto;
       width: 90%;
-      font-size: 400%;
+      font-size: 4rem;
     }
 
     .slide table, .slide td, .slide th {
