@@ -9,7 +9,7 @@ defmodule Declaimer.DSL do
   def author(author),     do: {:div, [author],   class: ["author"]}
 
   # macro generation !!
-  @tags_with_no_arg [:cite, :item, :text, :table]
+  @tags_with_no_arg [:cite, :item, :text, :table, :left, :right]
   Enum.each @tags_with_no_arg, fn (tag) ->
     do_function_name = String.to_atom("do_" <> Atom.to_string(tag))
 
@@ -132,5 +132,13 @@ defmodule Declaimer.DSL do
     Enum.map rows, fn (row) ->
       {:tr, Enum.map(row, &{:td, [&1], []}), []}
     end
+  end
+
+  def do_left(_, contents) do
+    {:div, contents, class: ["left-half"]}
+  end
+
+  def do_right(_, contents) do
+    {:div, contents, class: ["right-half"]}
   end
 end

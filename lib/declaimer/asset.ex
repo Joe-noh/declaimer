@@ -176,22 +176,14 @@ defmodule Declaimer.Asset do
       font-size: 10rem;
     }
 
-    .slide > ul {
-      margin-left: 7%;
+    .slide ul {
+      margin-left: 5rem;
       font-size: 4rem;
     }
 
-    .slide > ol {
-      margin-left: 10%;
+    .slide ol {
+      margin-left: 7rem;
       font-size: 4rem;
-    }
-
-    .slide ul ul, .slide ol ul {
-      margin-left: 4%;
-    }
-
-    .slide ul ol, .slide ol ol {
-      margin-left: 7%;
     }
 
     .slide li {
@@ -241,6 +233,16 @@ defmodule Declaimer.Asset do
     .slide img.width-max {
       height: auto;
       min-width: 100%;
+    }
+
+    .left-half {
+      width: 50%;
+      float: left;
+    }
+
+    .right-half {
+      width: 50%;
+      float: right;
     }
     """
   end
