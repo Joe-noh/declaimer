@@ -110,6 +110,16 @@ defmodule DSLTest do
     assert image == {:img, [], src: "img/photo.png", class: ["full"]}
   end
 
+  test "left" do
+    left = left do: "left side"
+    assert left == {:div, ["left side"], class: ["left-half"]}
+  end
+
+  test "right" do
+    right = right do: "right side"
+    assert right == {:div, ["right side"], class: ["right-half"]}
+  end
+
   test "slide" do
     {:div, contents, attrs} =
       slide "The Slide", theme: "dark" do
