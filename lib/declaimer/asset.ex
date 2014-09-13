@@ -155,12 +155,12 @@ defmodule Declaimer.Asset do
     }
 
     .slide h2 {
-      margin: 2% 0 3% 4%;
+      margin: 1rem 0 2rem 3rem;
       font-size: 5rem;
     }
 
     .slide p {
-      margin: 1% 0 1% 7%;
+      margin: 1rem 0 1rem 5rem;
       font-size: 4rem;
     }
 
@@ -187,11 +187,11 @@ defmodule Declaimer.Asset do
     }
 
     .slide li {
-      margin-top: 2%;
+      margin-top: 0.5rem;
     }
 
     .slide > blockquote, .slide > pre {
-      margin: 1% auto;
+      margin: 1rem auto;
       width: 90%;
     }
 
@@ -202,7 +202,7 @@ defmodule Declaimer.Asset do
     .slide blockquote {
       background-color: #e8e8e8;
       font-size: 4rem;
-      padding: 2%;
+      padding: 1rem;
     }
 
     .slide ul blockquote, .slide ol blockquote {
@@ -211,7 +211,7 @@ defmodule Declaimer.Asset do
     }
 
     .slide table {
-      margin: 1% auto;
+      margin: 1rem auto;
       width: 90%;
       font-size: 4rem;
     }
