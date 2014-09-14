@@ -72,6 +72,14 @@ defmodule DSLTest do
     assert multi  == {:li, ["one", "two"], []}
   end
 
+  test "link" do
+    link = link "css/base.css" do
+      text "link to base.css"
+    end
+
+    assert link == {:a, [{:p, ["link to base.css"], []}], [href: "css/base.css"]}
+  end
+
   test "table with headers" do
     table = table do
       ["one", "two"]

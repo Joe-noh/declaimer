@@ -31,7 +31,7 @@ defmodule Declaimer.DSL do
     end
   end
 
-  @tags_with_one_arg [:slide, :code, :list]
+  @tags_with_one_arg [:slide, :code, :list, :link]
   Enum.each @tags_with_one_arg, fn (tag) ->
     do_function_name = String.to_atom("do_" <> Atom.to_string(tag))
 
@@ -114,6 +114,10 @@ defmodule Declaimer.DSL do
   def do_list(invalid_type, _, _) do
     msg = "'#{invalid_type}' is invalid list type. Use :bullet or :numbered."
     raise ArgumentError, msg
+  end
+
+  def do_link(url, _, contents) do
+    {:a, contents, [href: url]}
   end
 
 	def do_table(opts, [first | rest] = rows) do
