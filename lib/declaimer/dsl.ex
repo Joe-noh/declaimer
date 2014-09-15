@@ -55,12 +55,13 @@ defmodule Declaimer.DSL do
 
   # exceptional !!
   defmacro image(src, opts \\ []) do
-    attrs = TagAttribute.add_class([src: src], opts[:size])
+    attrs = TagAttribute.apply([src: src], opts)
     quote do: {:img, [], unquote(attrs)}
   end
 
-  defmacro takahashi(text, _opts \\ []) do
-    quote do: {:div, [{:p, [unquote text], []}], [class: ["takahashi"]]}
+  defmacro takahashi(text, opts \\ []) do
+    attrs = TagAttribute.add_class([], opts[:deco])
+    quote do: {:div, [{:p, [unquote text], unquote(attrs)}], [class: ["takahashi"]]}
   end
 
   defmacro presentation(opts \\ [], do: {:__block__, _, contents}) do
@@ -86,33 +87,33 @@ defmodule Declaimer.DSL do
 
   # worker functions !!
   def do_slide(title, opts, contents) do
-    attrs = TagAttribute.put_new_theme([class: ["slide"]], opts[:theme])
-
+    attrs = TagAttribute.apply([class: ["slide"]], opts)
     {:div, [{:h2, [title], []} | contents], attrs}
   end
 
-  def do_cite(_, contents) do
-    {:blockquote, contents, []}
+  def do_cite(opts, contents) do
+    {:blockquote, contents, TagAttribute.apply([], opts)}
   end
 
-  def do_item(_, contents) do
-    {:li, contents, []}
+  def do_item(opts, contents) do
+    {:li, contents, TagAttribute.apply([], opts)}
   end
 
-  def do_text(_, contents) do
-    {:p, contents, []}
+  def do_text(opts, contents) do
+    {:p, contents, TagAttribute.apply([], opts)}
   end
 
-  def do_code(lang, _, contents) do
-    {:pre, [{:code, contents, class: [lang]}], []}
+  def do_code(lang, opts, contents) do
+    attrs = TagAttribute.apply([], opts)
+    {:pre, [{:code, contents, class: [lang]}], attrs}
   end
 
-  def do_list(:bullet, _, contents) do
-    {:ul, contents, []}
+  def do_list(:bullet, opts, contents) do
+    {:ul, contents, TagAttribute.apply([], opts)}
   end
 
-  def do_list(:numbered, _, contents) do
-    {:ol, contents, []}
+  def do_list(:numbered, opts, contents) do
+    {:ol, contents, TagAttribute.apply([], opts)}
   end
 
   def do_list(invalid_type, _, _) do
@@ -120,8 +121,8 @@ defmodule Declaimer.DSL do
     raise ArgumentError, msg
   end
 
-  def do_link(url, _, contents) do
-    {:a, contents, [href: url]}
+  def do_link(url, opts, contents) do
+    {:a, contents, TagAttribute.apply([href: url], opts)}
   end
 
 	def do_table(opts, [first | rest] = rows) do

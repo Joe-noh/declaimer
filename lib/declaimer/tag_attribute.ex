@@ -2,8 +2,19 @@ defmodule Declaimer.TagAttribute do
 
   import Kernel, except: [to_string: 1]
 
+  def apply(attrs, opts) do
+    attrs
+    |> add_class(opts[:deco])
+    |> put_new_theme(opts[:theme])
+    |> add_class(opts[:size])
+  end
+
   def add_class(attrs, nil) do
     attrs
+  end
+  def add_class(attrs, [head | rest]) do
+    attrs = add_class(attrs, head)
+    add_class(attrs, rest)
   end
   def add_class(attrs, class) do
     class = "#{class}"
