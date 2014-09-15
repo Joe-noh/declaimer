@@ -164,12 +164,13 @@ defmodule Declaimer.Asset do
       font-size: 4rem;
     }
 
-    .slide.takahashi {
-      display: inline-table;
+    .slide .takahashi {
+      height: 100%;
+      width:  100%;
+      display: table;
     }
 
-    .slide.takahashi * {
-      width: 90%;
+    .slide .takahashi p {
       vertical-align: middle;
       text-align: center;
       display: table-cell;

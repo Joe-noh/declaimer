@@ -118,6 +118,11 @@ defmodule DSLTest do
     assert image == {:img, [], src: "img/photo.png", class: ["full"]}
   end
 
+  test "takahashi" do
+    takahashi = takahashi("text")
+    assert takahashi == {:div, [{:p, ["text"], []}], class: ["takahashi"]}
+  end
+
   test "left" do
     left = left do: "left side"
     assert left == {:div, ["left side"], class: ["left-half"]}
