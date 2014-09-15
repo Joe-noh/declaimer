@@ -59,6 +59,10 @@ defmodule Declaimer.DSL do
     quote do: {:img, [], unquote(attrs)}
   end
 
+  defmacro takahashi(text, _opts \\ []) do
+    quote do: {:div, [{:p, [unquote text], []}], [class: ["takahashi"]]}
+  end
+
   defmacro presentation(opts \\ [], do: {:__block__, _, contents}) do
     {slides, metadata} = Enum.partition(contents, &(elem(&1, 0) == :slide))
 
