@@ -164,6 +164,22 @@ defmodule Declaimer.Asset do
       font-size: 4rem;
     }
 
+    .slide .bold {
+      font-weight: bold;
+    }
+
+    .slide .italic {
+      font-style: italic;
+    }
+
+    .slide .strike {
+      text-decoration: line-through;
+    }
+
+    .slide .underline {
+      text-decoration: underline
+    }
+
     .slide .takahashi {
       height: 100%;
       width:  100%;
