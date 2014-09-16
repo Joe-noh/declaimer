@@ -180,6 +180,10 @@ defmodule Declaimer.Asset do
       text-decoration: underline
     }
 
+    .slide .monospace {
+      font-family: monospace;
+    }
+
     .slide .takahashi {
       height: 100%;
       width:  100%;

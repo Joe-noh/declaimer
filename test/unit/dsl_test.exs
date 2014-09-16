@@ -123,6 +123,16 @@ defmodule DSLTest do
     assert takahashi == {:div, [{:p, ["text"], []}], class: ["takahashi"]}
   end
 
+  test "decoration" do
+    bold = text [deco: "bold"], "bold text"
+    assert bold == {:p, ["bold text"], [class: ["bold"]]}
+
+    strike_italic = text [deco: [:strike, :italic]], "strike italic"
+    {:p, ["strike italic"], [class: classes]} = strike_italic
+    assert "strike" in classes
+    assert "italic" in classes
+  end
+
   test "left" do
     left = left do: "left side"
     assert left == {:div, ["left side"], class: ["left-half"]}
