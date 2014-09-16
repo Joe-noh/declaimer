@@ -39,17 +39,17 @@ defmodule DSLTest do
 
   test "bullet" do
     bullet = bullet do
-      item "one"
-      item "two"
+      o "one"
+      o "two"
     end
 
-    assert bullet   == {:ul, [{:li, ["one"], []}, {:li, ["two"], []}], []}
+    assert bullet == {:ul, [{:li, ["one"], []}, {:li, ["two"], []}], []}
   end
 
   test "numbered" do
     numbered = numbered do
-      item "one"
-      item "two"
+      o "one"
+      o "two"
     end
 
     assert numbered == {:ol, [{:li, ["one"], []}, {:li, ["two"], []}], []}
@@ -59,6 +59,7 @@ defmodule DSLTest do
     item = item "one"
 
     assert item == {:li, ["one"], []}
+    assert item == o("one")
   end
 
   test "link" do
@@ -176,8 +177,8 @@ defmodule DSLTest do
 
       slide "List", theme: :dark do
         bullet do
-          item "one"
-          item "two"
+          o "one"
+          o "two"
         end
       end
 

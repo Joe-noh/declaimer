@@ -29,7 +29,7 @@ defmodule Declaimer.DSL do
   end
 
   # tags which accept one argument and optional options
-  [:item, :text, :image, :takahashi]
+  [:o, :item, :text, :image, :takahashi]
   |> Enum.each fn (tag) ->
     do_function_name = String.to_atom("do_" <> Atom.to_string(tag))
 
@@ -95,8 +95,11 @@ defmodule Declaimer.DSL do
     {:blockquote, contents, TagAttribute.apply([], opts)}
   end
 
-  def do_item(text, opts) do
-    {:li, [text], TagAttribute.apply([], opts)}
+  [:do_o, :do_item]
+  |> Enum.each fn (name) ->
+    def unquote(name)(text, opts) do
+      {:li, [text], TagAttribute.apply([], opts)}
+    end
   end
 
   def do_text(text, opts) do
