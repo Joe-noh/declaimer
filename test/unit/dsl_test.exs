@@ -19,32 +19,22 @@ defmodule DSLTest do
     assert author("John doe") == {:div, ["John doe"], class: ["author"]}
   end
 
-  test "cite single" do
-    assert cite("Lorem ipsum") == {:blockquote, ["Lorem ipsum"], []}
-  end
-
-  test "cite multi" do
-    multi  = cite do
+  test "cite" do
+    cite = cite do
       "Lorem"
       "ipsum"
     end
 
-    assert multi  == {:blockquote, ["Lorem", "ipsum"], []}
+    assert cite  == {:blockquote, ["Lorem", "ipsum"], []}
   end
 
-  test "code single" do
-    code = code("elixir", "iex> 1+2")
-
-    assert code == {:pre, [{:code, ["iex> 1+2"], class: ["elixir"]}], []}
-  end
-
-  test "code multi" do
-    multi = code "elixir" do
+  test "code" do
+    code = code "elixir" do
       "iex> 1+2"
       "3"
     end
 
-    assert multi  == {:pre, [{:code, ["iex> 1+2", "3"], class: ["elixir"]}], []}
+    assert code == {:pre, [{:code, ["iex> 1+2", "3"], class: ["elixir"]}], []}
   end
 
   test "list" do
@@ -61,22 +51,19 @@ defmodule DSLTest do
     assert numbered == {:ol, [{:li, ["one"], []}, {:li, ["two"], []}], []}
   end
 
-  test "list item" do
-    single = item "one"
-    multi  = item do
-      "one"
-      "two"
-    end
+  test "item" do
+    item = item "one"
 
-    assert single == {:li, ["one"], []}
-    assert multi  == {:li, ["one", "two"], []}
+    assert item == {:li, ["one"], []}
   end
 
   test "link" do
     link = link "css/base.css" do
       text "link to base.css"
     end
+    l = link "css/base.css", "base"
 
+    assert l == {:a, [{:p, ["base"], []}], [href: "css/base.css"]}
     assert link == {:a, [{:p, ["link to base.css"], []}], [href: "css/base.css"]}
   end
 
@@ -124,10 +111,11 @@ defmodule DSLTest do
   end
 
   test "decoration" do
-    bold = text [deco: "bold"], "bold text"
+    bold          = text "bold text",     deco: "bold"
+    strike_italic = text "strike italic", deco: [:strike, :italic]
+
     assert bold == {:p, ["bold text"], [class: ["bold"]]}
 
-    strike_italic = text [deco: [:strike, :italic]], "strike italic"
     {:p, ["strike italic"], [class: classes]} = strike_italic
     assert "strike" in classes
     assert "italic" in classes
@@ -173,7 +161,9 @@ defmodule DSLTest do
       author "me"
 
       slide "Intro" do
-        cite "Lorem ipsum"
+        cite do
+          "Lorem ipsum"
+        end
         code "elixir" do
           "iex> 1+2"
           "3"
