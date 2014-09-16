@@ -37,17 +37,21 @@ defmodule DSLTest do
     assert code == {:pre, [{:code, ["iex> 1+2", "3"], class: ["elixir"]}], []}
   end
 
-  test "list" do
-    bullet = list :bullet do
-      item "one"
-      item "two"
-    end
-    numbered = list :numbered do
-      item "one"
-      item "two"
+  test "bullet" do
+    bullet = bullet do
+      o "one"
+      o "two"
     end
 
-    assert bullet   == {:ul, [{:li, ["one"], []}, {:li, ["two"], []}], []}
+    assert bullet == {:ul, [{:li, ["one"], []}, {:li, ["two"], []}], []}
+  end
+
+  test "numbered" do
+    numbered = numbered do
+      o "one"
+      o "two"
+    end
+
     assert numbered == {:ol, [{:li, ["one"], []}, {:li, ["two"], []}], []}
   end
 
@@ -55,6 +59,7 @@ defmodule DSLTest do
     item = item "one"
 
     assert item == {:li, ["one"], []}
+    assert item == o("one")
   end
 
   test "link" do
@@ -171,9 +176,9 @@ defmodule DSLTest do
       end
 
       slide "List", theme: :dark do
-        list :bullet do
-          item "one"
-          item "two"
+        bullet do
+          o "one"
+          o "two"
         end
       end
 

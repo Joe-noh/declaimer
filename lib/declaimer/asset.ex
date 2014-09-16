@@ -11,7 +11,7 @@ defmodule Declaimer.Asset do
 
       slide "Page 1" do
         text "Hello World"
-        list :bullet do
+        bullet do
           item "こんにちわ"
           item "世界"
         end
