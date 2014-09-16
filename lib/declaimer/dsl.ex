@@ -11,7 +11,7 @@ defmodule Declaimer.DSL do
   # macro generation !!
 
   # tags which take optional options and a do-end block
-  [:cite, :table, :left, :right]
+  [:cite, :table, :left, :right, :bullet, :numbered]
   |> Enum.each fn (tag) ->
     do_function_name = String.to_atom("do_" <> Atom.to_string(tag))
 
@@ -40,7 +40,7 @@ defmodule Declaimer.DSL do
   end
 
   # tags which accept one argument, optional option and one block
-  [:slide, :code, :list, :link]
+  [:slide, :code, :link]
   |> Enum.each fn (tag) ->
     do_function_name = String.to_atom("do_" <> Atom.to_string(tag))
 
@@ -117,19 +117,6 @@ defmodule Declaimer.DSL do
     {:pre, [{:code, contents, class: [lang]}], attrs}
   end
 
-  def do_list(:bullet, opts, contents) do
-    {:ul, contents, TagAttribute.apply([], opts)}
-  end
-
-  def do_list(:numbered, opts, contents) do
-    {:ol, contents, TagAttribute.apply([], opts)}
-  end
-
-  def do_list(invalid_type, _, _) do
-    msg = "'#{invalid_type}' is invalid list type. Use :bullet or :numbered."
-    raise ArgumentError, msg
-  end
-
   def do_link(url, opts, contents) do
     {:a, contents, TagAttribute.apply([href: url], opts)}
   end
@@ -158,5 +145,13 @@ defmodule Declaimer.DSL do
 
   def do_right(_, contents) do
     {:div, contents, class: ["right-half"]}
+  end
+
+  def do_bullet(_, contents) do
+    {:ul, contents, []}
+  end
+
+  def do_numbered(_, contents) do
+    {:ol, contents, []}
   end
 end
