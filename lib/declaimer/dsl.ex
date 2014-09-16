@@ -9,8 +9,10 @@ defmodule Declaimer.DSL do
   def author(author),     do: {:div, [author],   class: ["author"]}
 
   # macro generation !!
-  @tags_with_no_arg [:cite, :item, :text, :table, :left, :right]
-  Enum.each @tags_with_no_arg, fn (tag) ->
+
+  # tags which take optional options and a do-end block
+  [:cite, :table, :left, :right]
+  |> Enum.each fn (tag) ->
     do_function_name = String.to_atom("do_" <> Atom.to_string(tag))
 
     defmacro unquote(tag)(opts \\ [], content)
@@ -24,15 +26,22 @@ defmodule Declaimer.DSL do
       fun = unquote(do_function_name)
       quote do: unquote(fun)(unquote(opts), [unquote content])
     end
+  end
 
-    defmacro unquote(tag)(opts, content) do
+  # tags which accept one argument and optional options
+  [:item, :text, :image, :takahashi]
+  |> Enum.each fn (tag) ->
+    do_function_name = String.to_atom("do_" <> Atom.to_string(tag))
+
+    defmacro unquote(tag)(arg, opts \\ []) do
       fun = unquote(do_function_name)
-      quote do: unquote(fun)(unquote(opts), [unquote content])
+      quote do: unquote(fun)(unquote(arg), unquote(opts))
     end
   end
 
-  @tags_with_one_arg [:slide, :code, :list, :link]
-  Enum.each @tags_with_one_arg, fn (tag) ->
+  # tags which accept one argument, optional option and one block
+  [:slide, :code, :list, :link]
+  |> Enum.each fn (tag) ->
     do_function_name = String.to_atom("do_" <> Atom.to_string(tag))
 
     defmacro unquote(tag)(arg, opts \\ [], content)
@@ -46,22 +55,13 @@ defmodule Declaimer.DSL do
       fun = unquote(do_function_name)
       quote do: unquote(fun)(unquote(arg), unquote(opts), [unquote content])
     end
-
-    defmacro unquote(tag)(arg, opts, content) do
-      fun = unquote(do_function_name)
-      quote do: unquote(fun)(unquote(arg), unquote(opts), [unquote content])
-    end
   end
 
   # exceptional !!
-  defmacro image(src, opts \\ []) do
-    attrs = TagAttribute.apply([src: src], opts)
-    quote do: {:img, [], unquote(attrs)}
-  end
-
-  defmacro takahashi(text, opts \\ []) do
-    attrs = TagAttribute.add_class([], opts[:deco])
-    quote do: {:div, [{:p, [unquote text], unquote(attrs)}], [class: ["takahashi"]]}
+  defmacro link(arg, opts, content) when is_binary(content) do
+    quote do
+      do_link(unquote(arg), unquote(opts), [text unquote content])
+    end
   end
 
   defmacro presentation(opts \\ [], do: {:__block__, _, contents}) do
@@ -95,12 +95,21 @@ defmodule Declaimer.DSL do
     {:blockquote, contents, TagAttribute.apply([], opts)}
   end
 
-  def do_item(opts, contents) do
-    {:li, contents, TagAttribute.apply([], opts)}
+  def do_item(text, opts) do
+    {:li, [text], TagAttribute.apply([], opts)}
   end
 
-  def do_text(opts, contents) do
-    {:p, contents, TagAttribute.apply([], opts)}
+  def do_text(text, opts) do
+    {:p, [text], TagAttribute.apply([], opts)}
+  end
+
+  def do_image(src, opts) do
+    {:img, [], TagAttribute.apply([src: src], opts)}
+  end
+
+  def do_takahashi(text, opts) do
+    attrs = TagAttribute.add_class([], opts[:deco])
+    {:div, [{:p, [text], attrs}], class: ["takahashi"]}
   end
 
   def do_code(lang, opts, contents) do
