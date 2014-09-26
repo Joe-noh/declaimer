@@ -204,3 +204,12 @@ slide "L and R" do
   end
 end
 ```
+
+### Contribution
+
+Any kind of contribution is welcomed.
+
+- requests
+- ideas
+- reports
+- complaints
