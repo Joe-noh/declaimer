@@ -181,7 +181,7 @@ defmodule Declaimer.Asset do
     }
 
     .slide .monospace {
-      font-family: monospace;
+      font-family: 'Menlo' monospace;
     }
 
     .slide .takahashi {
@@ -218,6 +218,10 @@ defmodule Declaimer.Asset do
 
     .slide pre {
       font-size: 3rem;
+    }
+
+    .slide code {
+      font-family: 'Menlo' monospace;
     }
 
     .slide blockquote {
