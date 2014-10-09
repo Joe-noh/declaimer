@@ -199,16 +199,18 @@ defmodule Declaimer.Asset do
 
     .slide ul {
       margin-left: 5rem;
+      margin-bottom: 2rem;
       font-size: 4rem;
     }
 
     .slide ol {
       margin-left: 7rem;
+      margin-top: 1rem;
       font-size: 4rem;
     }
 
     .slide li {
-      margin-top: 0.5rem;
+      margin-top: 1rem;
     }
 
     .slide > blockquote, .slide > pre {
