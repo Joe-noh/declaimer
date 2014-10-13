@@ -4,7 +4,7 @@ A tool for making presentation slides.
 
 ### Getting Started
 
-```shell-session
+```console
 $ mix new great_talk
 $ cd ./great_talk
 $ ls -l
