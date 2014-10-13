@@ -4,9 +4,18 @@ A tool for making presentation slides.
 
 ### Getting Started
 
-```sh
+```shell-session
 $ mix new great_talk
 $ cd ./great_talk
+$ ls -l
+total 32
+8 -rw-r--r--  1 joe  staff  1078  9 19 19:21 LICENSE
+8 -rw-r--r--  1 joe  staff  3692  9 27 01:18 README.md
+0 drwxr-xr-x  3 joe  staff   102  9 19 19:21 config
+0 drwxr-xr-x  5 joe  staff   170  9 19 19:21 lib
+8 -rw-r--r--  1 joe  staff   251  9 19 19:21 mix.exs
+8 -rw-r--r--  1 joe  staff    38  9 19 19:21 mix.lock
+0 drwxr-xr-x  6 joe  staff   204  9 19 19:21 test
 ```
 
 Add `declaimer` to deps in `mix.exs`.
