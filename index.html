@@ -1,0 +1,259 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Declaimer by Joe-noh</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Declaimer</h1>
+        <p class="header"></p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/Joe-noh/declaimer/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/Joe-noh/declaimer/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/Joe-noh/declaimer">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/Joe-noh">Joe-noh</a></p>
+
+
+      </header>
+      <section>
+        <h2>
+<a name="declaimer" class="anchor" href="#declaimer"><span class="octicon octicon-link"></span></a>Declaimer</h2>
+
+<p>A tool for making presentation slides.</p>
+
+<h3>
+<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h3>
+
+<div class="highlight highlight-sh"><pre><span class="nv">$ </span>mix new great_talk
+<span class="nv">$ </span><span class="nb">cd</span> ./great_talk
+</pre></div>
+
+<p>Add <code>declaimer</code> to deps in <code>mix.exs</code>.</p>
+
+<div class="highlight highlight-elixir"><pre><span class="kd">def</span> <span class="n">deps</span> <span class="k">do</span>
+  <span class="p">[{</span><span class="ss">:declaimer</span><span class="p">,</span> <span class="ss">github</span><span class="p">:</span> <span class="s2">"Joe-noh/declaimer"</span><span class="p">}]</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>Then do this.</p>
+
+<pre><code>$ mix do deps.get, deps.compile
+</code></pre>
+
+<p>Now you can use a few declaimer tasks. At first, you have to initialize your project directory.</p>
+
+<pre><code>$ mix declaimer.init
+</code></pre>
+
+<p>You'll see some new files and directories. It's time to compile!</p>
+
+<pre><code>$ mix declaimer.compile
+</code></pre>
+
+<p><code>compile</code> task generates <code>presentation.html</code> from <code>presentation.exs</code>. Opening this file in your browser, you can go back and forth with cursor keys.</p>
+
+<h3>
+<a name="syntax" class="anchor" href="#syntax"><span class="octicon octicon-link"></span></a>Syntax</h3>
+
+<h4>
+<a name="outline" class="anchor" href="#outline"><span class="octicon octicon-link"></span></a>Outline</h4>
+
+<div class="highlight highlight-elixir"><pre><span class="kn">use</span> <span class="nc">Declaimer</span>
+
+<span class="n">presentation</span> <span class="k">do</span>
+  <span class="n">title</span>    <span class="s2">"Great Talk"</span>
+  <span class="n">subtitle</span> <span class="s2">"You must be impressed"</span>
+  <span class="n">author</span>   <span class="s2">"John Doe"</span>
+  <span class="n">date</span>     <span class="s2">"2014 Sep. 24th"</span>
+
+  <span class="n">slide</span> <span class="s2">"Introduction"</span> <span class="k">do</span>
+    <span class="n">text</span> <span class="s2">"bla bla"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>As you know <code>presentation.exs</code> is an elixir script. <code>declaimer.compile</code> task evaluates this file to make HTML, so valid elixir code should be there.</p>
+
+<p>First, <code>use Declaimer</code> is required. This make us to be able to use Declaimer DSL. The body of presentation has to be surrounded by <code>presentation do ... end</code>.</p>
+
+<h4>
+<a name="metadata" class="anchor" href="#metadata"><span class="octicon octicon-link"></span></a>Metadata</h4>
+
+<p>There are four type of metadata. They will be rendered on the cover page.</p>
+
+<ul>
+<li><code>title</code></li>
+<li><code>subtitle</code></li>
+<li><code>author</code></li>
+<li><code>date</code></li>
+</ul>
+
+<p>All of them take one argument which type is <code>binary</code>.</p>
+
+<h4>
+<a name="slide" class="anchor" href="#slide"><span class="octicon octicon-link"></span></a>Slide</h4>
+
+<p><code>slide</code> DSL accept one <code>binary</code> and one <code>do block</code>. This represents a page of presentation. Also optional setting can be given like this.</p>
+
+<pre><code>slide "Introduction", theme: :dark do
+  text "bla bla"
+end
+</code></pre>
+
+<p>Now valid option is only <code>:theme</code>, and there is only one theme <code>:dark</code> (pull requests are welcomed).</p>
+
+<h4>
+<a name="slide-contents" class="anchor" href="#slide-contents"><span class="octicon octicon-link"></span></a>Slide Contents</h4>
+
+<h5>
+<a name="plain-text" class="anchor" href="#plain-text"><span class="octicon octicon-link"></span></a>plain text</h5>
+
+<div class="highlight highlight-elixir"><pre><span class="n">text</span> <span class="s2">"foo bar"</span>
+</pre></div>
+
+<h5>
+<a name="citation" class="anchor" href="#citation"><span class="octicon octicon-link"></span></a>citation</h5>
+
+<div class="highlight highlight-elixir"><pre><span class="n">cite</span> <span class="k">do</span>
+  <span class="c1"># arbitary content</span>
+<span class="k">end</span>
+</pre></div>
+
+<h5>
+<a name="source-code" class="anchor" href="#source-code"><span class="octicon octicon-link"></span></a>source code</h5>
+
+<div class="highlight highlight-elixir"><pre><span class="n">code</span> <span class="s2">"html"</span> <span class="k">do</span>
+  <span class="sh">"""</span>
+<span class="sh">  !doctype html</span>
+<span class="sh">  &lt;html&gt;</span>
+<span class="sh">    &lt;body&gt;&lt;/body&gt;</span>
+<span class="sh">  &lt;/html&gt;</span>
+<span class="sh">  """</span>
+<span class="k">end</span>
+</pre></div>
+
+<p><code>code</code> takes a name of the language which is put inside the block.
+It will be directly used as HTML class of <code>&lt;code&gt;</code> tag. You can see valid name <a href="http://highlightjs.readthedocs.org/en/latest/css-classes-reference.html">here</a>.</p>
+
+<h5>
+<a name="list" class="anchor" href="#list"><span class="octicon octicon-link"></span></a>list</h5>
+
+<div class="highlight highlight-elixir"><pre><span class="n">bullet</span> <span class="k">do</span>
+  <span class="n">item</span> <span class="s2">"one"</span>
+  <span class="n">item</span> <span class="s2">"two"</span>
+<span class="k">end</span>
+
+<span class="n">numbered</span> <span class="k">do</span>
+  <span class="n">item</span> <span class="s2">"one"</span>
+  <span class="n">item</span> <span class="s2">"two"</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>There are two types of list, <code>bullet</code> and <code>numbered</code>. <code>item</code> has an alias <code>o</code> therefore you can write like this.</p>
+
+<div class="highlight highlight-elixir"><pre><span class="n">bullet</span> <span class="k">do</span>
+  <span class="n">o</span> <span class="s2">"one"</span>
+  <span class="n">o</span> <span class="s2">"two"</span>
+<span class="k">end</span>
+</pre></div>
+
+<h5>
+<a name="image" class="anchor" href="#image"><span class="octicon octicon-link"></span></a>image</h5>
+
+<div class="highlight highlight-elixir"><pre><span class="n">image</span> <span class="s2">"path/to/image"</span>
+</pre></div>
+
+<h5>
+<a name="link" class="anchor" href="#link"><span class="octicon octicon-link"></span></a>link</h5>
+
+<div class="highlight highlight-elixir"><pre><span class="n">link</span> <span class="s2">"path/to/where/you/go"</span> <span class="k">do</span>
+  <span class="c1"># arbitary content</span>
+<span class="k">end</span>
+</pre></div>
+
+<h5>
+<a name="table" class="anchor" href="#table"><span class="octicon octicon-link"></span></a>table</h5>
+
+<div class="highlight highlight-elixir"><pre><span class="n">table</span> <span class="k">do</span>
+  <span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">]</span>  <span class="c1"># enclosed with &lt;th&gt;</span>
+  <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">]</span>  <span class="c1"># enclosed with &lt;td&gt;</span>
+<span class="k">end</span>
+
+<span class="n">table</span> <span class="ss">header</span><span class="p">:</span> <span class="no">false</span> <span class="k">do</span>
+  <span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">]</span>  <span class="c1"># enclosed with &lt;td&gt;</span>
+  <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">]</span>  <span class="c1"># enclosed with &lt;td&gt;</span>
+<span class="k">end</span>
+</pre></div>
+
+<h5>
+<a name="decorations" class="anchor" href="#decorations"><span class="octicon octicon-link"></span></a>decorations</h5>
+
+<p>You can make texts on your slides bold, italic and so on with <code>deco</code> option.
+Type of the value is <code>binary</code> or <code>atom</code>.</p>
+
+<div class="highlight highlight-elixir"><pre><span class="n">text</span> <span class="s2">"this will be bold"</span><span class="p">,</span> <span class="ss">deco</span><span class="p">:</span> <span class="s2">"bold"</span>
+<span class="n">text</span> <span class="s2">"will be italic"</span><span class="p">,</span>    <span class="ss">deco</span><span class="p">:</span> <span class="s2">"italic"</span>
+<span class="n">text</span> <span class="s2">"strike-through"</span><span class="p">,</span>    <span class="ss">deco</span><span class="p">:</span> <span class="s2">"strike"</span>
+<span class="n">text</span> <span class="s2">"underlined text"</span><span class="p">,</span>   <span class="ss">deco</span><span class="p">:</span> <span class="ss">:underline</span>
+<span class="n">text</span> <span class="s2">"monospace font"</span><span class="p">,</span>    <span class="ss">deco</span><span class="p">:</span> <span class="ss">:monospace</span>
+</pre></div>
+
+<p>Notations like following are valid.</p>
+
+<div class="highlight highlight-elixir"><pre><span class="n">numbered</span> <span class="k">do</span>
+  <span class="n">o</span> <span class="s2">"Yeah !!"</span><span class="p">,</span> <span class="ss">deco</span><span class="p">:</span> <span class="p">[</span><span class="ss">:bold</span><span class="p">,</span> <span class="ss">:underline</span><span class="p">]</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>Note: you can't apply these decorations only a part of a line.</p>
+
+<h5>
+<a name="layout" class="anchor" href="#layout"><span class="octicon octicon-link"></span></a>layout</h5>
+
+<p>A slide can be divided with <code>left</code> and <code>right</code>.</p>
+
+<div class="highlight highlight-elixir"><pre><span class="n">slide</span> <span class="s2">"L and R"</span> <span class="k">do</span>
+  <span class="n">left</span> <span class="k">do</span>
+    <span class="c1"># content placed in left-half of this slide</span>
+  <span class="k">end</span>
+
+  <span class="n">right</span> <span class="k">do</span>
+    <span class="c1"># content placed in right-half</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+<h3>
+<a name="contribution" class="anchor" href="#contribution"><span class="octicon octicon-link"></span></a>Contribution</h3>
+
+<p>Any kind of contribution is welcomed.</p>
+
+<ul>
+<li>requests</li>
+<li>ideas</li>
+<li>reports</li>
+<li>complaints</li>
+</ul>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
